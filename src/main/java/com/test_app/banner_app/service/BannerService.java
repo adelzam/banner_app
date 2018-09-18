@@ -1,12 +1,16 @@
 package com.test_app.banner_app.service;
 
+import com.test_app.banner_app.entity.Audit;
 import com.test_app.banner_app.entity.Banner;
 import com.test_app.banner_app.entity.Local;
+import com.test_app.banner_app.entity.User;
 import com.test_app.banner_app.entity.enums.BannerSortEnum;
+import com.test_app.banner_app.entity.enums.TypeChange;
 import com.test_app.banner_app.repositories.BannerRepository;
-import com.test_app.banner_app.repositories.LocalRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,35 +20,76 @@ import java.util.Optional;
 public class BannerService {
 
     private final BannerRepository bannerRepository;
-    private final LocalRepository localRepository;
+    private final LocalService localService;
+    private final AuditService auditService;
 
-    public BannerService(BannerRepository bannerRepository, LocalRepository localRepository) {
+    public BannerService(BannerRepository bannerRepository, LocalService localService, AuditService auditService) {
         this.bannerRepository = bannerRepository;
-        this.localRepository = localRepository;
+        this.localService = localService;
+        this.auditService = auditService;
     }
 
     public void getPreload(Map<String, Object> model) {
         addBannersToModel(model);
         addFilterToModel(model);
-        addLocalsToModel(model);
+        localService.addLocalsToModel(model);
+    }
+
+    public void createOrUpdateBanner(User user, Integer id, Integer langId, String targetUrl, Integer height, Integer width, String imgSrc) {
+        Local local = localService.getLocalById(langId);
+        Banner banner = new Banner(local, targetUrl, height, width, imgSrc);
+        String comment = "";
+        TypeChange type = null;
+        if (id == null) {
+            type = TypeChange.CREATED;
+            comment = "new comment";
+        } else {
+            type = TypeChange.UPDATED;
+            comment = getBannerChanges(banner, id);
+            banner.setId(id);
+        }
+        Audit audit = new Audit(
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")),
+                user,
+                banner,
+                type,
+                comment);
+        saveBannerToDB(banner, audit);
+    }
+
+    public void deletedBanner(User user, Integer id) {
+        Optional<Banner> banner = bannerRepository.findById(id);
+        final String[] comment = {""};
+        banner.ifPresent(banner1 -> {
+            comment[0] = banner1.toString();
+            auditService.updateAuditDeleted(banner1);
+        });
+        Audit audit = new Audit(
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")),
+                user,
+                null,
+                TypeChange.DELETED,
+                comment[0]);
+        bannerRepository.deleteById(id);
+        auditService.saveAuditLine(audit);
     }
 
     public void getPreloadWithFilter(Map<String, Object> model, BannerSortEnum filter) {
         addFilerBannersToModel(model, filter);
         addFilterToModel(model);
-        addLocalsToModel(model);
+        localService.addLocalsToModel(model);
     }
 
     public void getBannerForEdit(Map<String, Object> model, Integer id) {
         Optional<Banner> banner = bannerRepository.findById(id);
         banner.ifPresent(banner1 -> {
             model.put("banner", banner1);
-            List<Local> localList = localRepository.findAllByIdIsNot(banner1.getLang().getId());
+            List<Local> localList = localService.getLocalsWithoutOne(banner1);
             model.put("locals", localList);
         });
     }
 
-    public String getBannerChanges(Banner banner, Integer id) {
+    private String getBannerChanges(Banner banner, Integer id) {
         Map<String, String> changeMap = new HashMap<>();
         final String[] changeComment = {""};
         bannerRepository.findById(id).ifPresent(bannerFromDB -> {
@@ -75,11 +120,16 @@ public class BannerService {
             }
         });
         changeMap.forEach((k, v) -> {
-            if (v!=null) {
-                changeComment[0] = changeComment[0] + " "+k+" old value: "+v+";";
+            if (v != null) {
+                changeComment[0] = changeComment[0] + " " + k + " old value: " + v + ";";
             }
         });
         return changeComment[0];
+    }
+
+    private void saveBannerToDB(Banner banner, Audit audit) {
+        bannerRepository.save(banner);
+        auditService.saveAuditLine(audit);
     }
 
     private void addFilterToModel(Map<String, Object> model) {
@@ -89,11 +139,6 @@ public class BannerService {
             filters.put(key, value);
         }
         model.put("filters", filters.entrySet());
-    }
-
-    private void addLocalsToModel(Map<String, Object> model) {
-        Iterable<Local> locals = localRepository.findAll();
-        model.put("locals", locals);
     }
 
     private void addBannersToModel(Map<String, Object> model) {

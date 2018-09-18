@@ -83,4 +83,15 @@ public class Banner {
     public void setImgSrc(String imgSrc) {
         this.imgSrc = imgSrc;
     }
+
+    @Override
+    public String toString() {
+        return "Banner{" +
+                "lang=" + lang.toString() +
+                ", targetUrl='" + targetUrl + '\'' +
+                ", height=" + height +
+                ", width=" + width +
+                ", imgSrc='" + imgSrc + '\'' +
+                '}';
+    }
 }
