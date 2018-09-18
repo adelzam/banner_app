@@ -1,21 +1,19 @@
 package com.test_app.banner_app.controller;
 
-import com.sun.deploy.net.HttpResponse;
 import com.test_app.banner_app.entity.*;
 import com.test_app.banner_app.repositories.AuditRepository;
 import com.test_app.banner_app.repositories.BannerRepository;
 import com.test_app.banner_app.repositories.LocalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -55,7 +53,7 @@ public class BannerController {
                     banner,
                     TypeChange.CREATED,
                     "new banner");
-            auditRepository.save(audit));
+            auditRepository.save(audit);
             bannerRepository.save(banner);
         }
 

@@ -2,7 +2,6 @@ package com.test_app.banner_app.entity;
 
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "audit")
