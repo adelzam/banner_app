@@ -1,4 +1,4 @@
-package com.test_app.banner_app.entity;
+package com.test_app.banner_app.entity.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 

@@ -1,6 +1,6 @@
 package com.test_app.banner_app.controller;
 
-import com.test_app.banner_app.entity.Role;
+import com.test_app.banner_app.entity.enums.Role;
 import com.test_app.banner_app.entity.User;
 import com.test_app.banner_app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,8 @@
 package com.test_app.banner_app.entity;
 
 
+import com.test_app.banner_app.entity.enums.TypeChange;
+
 import javax.persistence.*;
 
 @Entity

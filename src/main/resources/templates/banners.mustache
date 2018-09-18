@@ -13,6 +13,17 @@
         </form>
          </div>
 <div>
+    <form method="post" action="/banners/filter">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+        <select name="sortType">
+            {{#filters}}
+                <option value="{{key}}">{{value}}</option>
+            {{/filters}}
+        </select>
+        <button type="submit">Sort</button>
+    </form>
+</div>
+<div>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{_csrf.token}}">
         <select name="langId">
@@ -36,6 +47,7 @@
     {{height}}
     {{width}}
     {{imgSrc}}
+    <a href="/banners/edit/{{id}}">Edit</a>
 </div>
 {{/banners}}
 </body>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+<div>
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+            <input type="submit" value="Sign Out"/>
+        </form>
+         </div>
+{{#audits}}
+<div>
+    {{id}}
+    {{date}}
+    {{banner.id}}
+    {{banner.lang.country}}
+    {{banner.lang.language}}
+    {{banner.targetUrl}}
+    {{banner.height}}
+    {{banner.width}}
+    {{banner.imgSrc}}
+    {{user.username}}
+    {{type}}
+    {{comment}}
+</div>
+{{/audits}}
+</body>
+</html>

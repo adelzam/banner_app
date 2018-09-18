@@ -11,4 +11,9 @@ public interface BannerRepository extends CrudRepository<Banner, Integer> {
     List<Banner> findBannersByLang(Local local);
 
    List<Banner> findByOrderByLangIdAsc();
+
+    List<Banner> findByOrderByLangIdDesc();
+
+    List<Banner> findByOrderById();
+
 }

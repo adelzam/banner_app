@@ -1,5 +1,6 @@
 package com.test_app.banner_app.entity;
 
+import com.test_app.banner_app.entity.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,6 +26,18 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    public User() {
+    }
+
+    public User(String username, String password, String firstName, String lastName, boolean active, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.active = active;
+        this.roles = roles;
+    }
 
     public Long getId() {
         return id;
