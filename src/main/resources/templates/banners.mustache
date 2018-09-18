@@ -15,18 +15,23 @@
 <div>
     <form method="post">
         <input type="hidden" name="_csrf" value="{{_csrf.token}}">
-        <input type="text" name="langId" placeholder="введите">
-        <input type="text" name="targetUrl"  placeholder="введите">
-        <input type="text" name="height"  placeholder="введите">
-        <input type="text" name="width"  placeholder="введите">
-        <input type="text" name="imgSrc"  placeholder="введите">
-        <button type="submit">Добавить</button>
+        <select name="langId">
+            {{#locals}}
+                <option value="{{id}}">{{country}} {{language}}</option>
+            {{/locals}}
+        </select>
+        <input type="text" name="targetUrl"  placeholder="targetUrl">
+        <input type="text" name="height"  placeholder="height">
+        <input type="text" name="width"  placeholder="width">
+        <input type="text" name="imgSrc"  placeholder="imgSrc">
+        <button type="submit">Add</button>
     </form>
 </div>
 {{#banners}}
 <div>
     {{id}}
-    {{langId}}
+    {{lang.country}}
+    {{lang.language}}
     {{targetUrl}}
     {{height}}
     {{width}}

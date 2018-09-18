@@ -9,8 +9,9 @@ public class Banner {
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 
-    @Column(name = "lang_id")
-    private Integer langId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "lang_id")
+    private Local lang;
 
     @Column(name = "target_url")
     private String targetUrl;
@@ -27,12 +28,12 @@ public class Banner {
     public Banner() {
     }
 
-    public Banner(Integer lang_id, String target_url, Integer height, Integer width, String img_src) {
-        this.langId = lang_id;
-        this.targetUrl = target_url;
+    public Banner(Local lang, String targetUrl, Integer height, Integer width, String imgSrc) {
+        this.lang = lang;
+        this.targetUrl = targetUrl;
         this.height = height;
         this.width = width;
-        this.imgSrc = img_src;
+        this.imgSrc = imgSrc;
     }
 
     public Integer getId() {
@@ -43,12 +44,12 @@ public class Banner {
         this.id = id;
     }
 
-    public Integer getLangId() {
-        return langId;
+    public Local getLang() {
+        return lang;
     }
 
-    public void setLangId(Integer langId) {
-        this.langId = langId;
+    public void setLang(Local lang) {
+        this.lang = lang;
     }
 
     public String getTargetUrl() {
