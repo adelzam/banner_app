@@ -1,20 +1,17 @@
 package com.test_app.banner_app.controller;
 
-import com.test_app.banner_app.entity.Audit;
 import com.test_app.banner_app.entity.Banner;
-import com.test_app.banner_app.entity.Local;
 import com.test_app.banner_app.entity.User;
 import com.test_app.banner_app.entity.enums.BannerSortEnum;
-import com.test_app.banner_app.entity.enums.TypeChange;
-import com.test_app.banner_app.repositories.BannerRepository;
 import com.test_app.banner_app.service.BannerService;
-import com.test_app.banner_app.service.LocalService;
+import com.test_app.banner_app.service.ErrorAddService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import javax.validation.Valid;
 import java.util.Map;
 
 @Controller
@@ -22,9 +19,12 @@ import java.util.Map;
 public class BannerController {
 
     private final BannerService bannerService;
+    private final ErrorAddService errorAddService;
 
-    public BannerController(BannerService bannerService) {
+    @Autowired
+    public BannerController(BannerService bannerService, ErrorAddService errorAddService) {
         this.bannerService = bannerService;
+        this.errorAddService = errorAddService;
     }
 
 
@@ -37,12 +37,15 @@ public class BannerController {
     @PostMapping
     public String add(@AuthenticationPrincipal User user,
                       @RequestParam Integer langId,
-                      @RequestParam String targetUrl,
-                      @RequestParam Integer height,
-                      @RequestParam Integer width,
-                      @RequestParam String imgSrc,
+                      @Valid Banner banner,
+                      BindingResult bindingResult,
                       Map<String, Object> model) {
-        bannerService.createOrUpdateBanner(user, null, langId, targetUrl, height, width, imgSrc);
+        if (bindingResult.hasErrors()) {
+            errorAddService.writeErrors(bindingResult, model);
+        } else {
+            banner.setId(null);
+            bannerService.createOrUpdateBanner(user, banner, langId);
+        }
         bannerService.getPreload(model);
         return "banners";
     }
@@ -68,14 +71,15 @@ public class BannerController {
 
     @PostMapping("update")
     public String updateBanner(@AuthenticationPrincipal User user,
-                               @RequestParam Integer id,
                                @RequestParam Integer langId,
-                               @RequestParam String targetUrl,
-                               @RequestParam Integer height,
-                               @RequestParam Integer width,
-                               @RequestParam String imgSrc,
+                               @Valid Banner banner,
+                               BindingResult bindingResult,
                                Map<String, Object> model) {
-        bannerService.createOrUpdateBanner(user, id, langId, targetUrl, height, width, imgSrc);
+        if (bindingResult.hasErrors()) {
+            errorAddService.writeErrors(bindingResult, model);
+        } else {
+            bannerService.createOrUpdateBanner(user, banner, langId);
+        }
         bannerService.getPreload(model);
         return "redirect:/banners";
     }

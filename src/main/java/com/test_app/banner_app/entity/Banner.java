@@ -1,11 +1,14 @@
 package com.test_app.banner_app.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Banner {
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 
@@ -13,15 +16,21 @@ public class Banner {
     @JoinColumn(name = "lang_id")
     private Local lang;
 
+    @NotBlank(message = "Entered value is empty! Please enter target url.")
     @Column(name = "target_url")
     private String targetUrl;
 
+    @NotNull
+    @Min(1)
     @Column(name = "height")
     private Integer height;
 
+    @NotNull
+    @Min(1)
     @Column(name = "width")
     private Integer width;
 
+    @NotBlank(message = "Entered value is empty! Please enter target image source.")
     @Column(name = "img_src")
     private String imgSrc;
 

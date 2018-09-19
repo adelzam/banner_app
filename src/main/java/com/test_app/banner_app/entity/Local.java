@@ -1,6 +1,7 @@
 package com.test_app.banner_app.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -11,8 +12,10 @@ public class Local {
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 
+    @NotBlank(message = "Country cannot be empty")
     private String country;
 
+    @NotBlank(message = "Language cannot be empty")
     private String language;
 
     public Local() {

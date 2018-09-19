@@ -35,19 +35,19 @@ public class BannerService {
         localService.addLocalsToModel(model);
     }
 
-    public void createOrUpdateBanner(User user, Integer id, Integer langId, String targetUrl, Integer height, Integer width, String imgSrc) {
+    public void createOrUpdateBanner(User user, Banner banner, Integer langId) {
         Local local = localService.getLocalById(langId);
-        Banner banner = new Banner(local, targetUrl, height, width, imgSrc);
         String comment = "";
         TypeChange type = null;
-        if (id == null) {
+        if (banner.getId()== null) {
             type = TypeChange.CREATED;
             comment = "new comment";
         } else {
             type = TypeChange.UPDATED;
-            comment = getBannerChanges(banner, id);
-            banner.setId(id);
+            comment = getBannerChanges(banner, Math.toIntExact(banner.getId()));
+            banner.setId(banner.getId());
         }
+        banner.setLang(local);
         Audit audit = new Audit(
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")),
                 user,
@@ -62,7 +62,7 @@ public class BannerService {
         final String[] comment = {""};
         banner.ifPresent(banner1 -> {
             comment[0] = banner1.toString();
-            auditService.updateAuditDeleted(banner1);
+            auditService.updateAuditDeleted(banner1.getId());
         });
         Audit audit = new Audit(
                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")),

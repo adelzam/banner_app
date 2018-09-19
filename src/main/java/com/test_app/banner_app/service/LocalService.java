@@ -3,6 +3,7 @@ package com.test_app.banner_app.service;
 import com.test_app.banner_app.entity.Banner;
 import com.test_app.banner_app.entity.Local;
 import com.test_app.banner_app.repositories.LocalRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class LocalService {
 
     private final LocalRepository localRepository;
 
+    @Autowired
     public LocalService(LocalRepository localRepository) {
         this.localRepository = localRepository;
     }
@@ -27,7 +29,7 @@ public class LocalService {
         return localRepository.findAllByIdIsNot(banner.getLang().getId());
     }
 
-    public Local getLocalById(Integer id) {
+    Local getLocalById(Integer id) {
         Optional<Local> local = localRepository.findById(id);
         return local.orElse(null);
     }
