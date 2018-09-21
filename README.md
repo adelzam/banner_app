@@ -10,7 +10,9 @@
 
 2. База данных для работы приложения. Для этой базы необходимо  создать базу со следующими настройками: **app_db**
 
-По умолчанию настройки пользователя для обеих БД в приложении стоят следующие ```` spring.datasource.username=postgres  spring.datasource.password=123456 ```` 
+По умолчанию настройки пользователя для обеих БД в приложении стоят следующие ```` spring.datasource.username=postgres
+
+spring.datasource.password=123456 ```` 
 
 **ВНИМАНИЕ!**  Если в PostgreSQL используется другой пользователь для базы данных или пароль их необходимо   изменить в файлах **application.properties** и **application-test.properties**
 
