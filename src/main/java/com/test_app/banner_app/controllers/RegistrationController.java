@@ -1,4 +1,4 @@
-package com.test_app.banner_app.controller;
+package com.test_app.banner_app.controllers;
 
 import com.test_app.banner_app.entity.User;
 import com.test_app.banner_app.service.ErrorAddService;
@@ -35,7 +35,7 @@ public class RegistrationController {
                           BindingResult bindingResult,
                           Map<String, Object> model) {
         if (bindingResult.hasErrors()) {
-            errorAddService.writeErrors(bindingResult, model);
+            model.put("errors",errorAddService.writeErrors(bindingResult));
         } else {
             if (!userService.addUser(user)) {
                 model.put("message", "user exists!");

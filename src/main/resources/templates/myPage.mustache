@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script type="text/javascript" src="/static/js/script.js"></script>
+    <link href='/static/css/help_style.css' rel='stylesheet' type='text/css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Banner admin panel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/banners">Show all banners <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/audit/my">Show my audit</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/audit">Show audit</a>
+            </li>
+            <div>{{user}}</div>
+            <form action="/logout" method="post">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+                <input type="submit" value="Sign Out" class="btn btn-outline-success"/>
+            </form>
+        </ul>
+    </div>
+</nav>
+<div>
+    <div class="row" style="margin-right: 2%; margin-left: 2%; text-align: center; margin-top: 5%">
+        <div class="col-sm">
+            <div>
+                <h3 style="font-size:500%"><a href="/audit/my">Check action</a></h3>
+            </div>
+            <div>
+                Here you can check your actions with banners
+            </div>
+        </div>
+        <div class="col-sm">
+            <div>
+                <h3 style="font-size:500%"><a href="/audit">All action</a></h3>
+            </div>
+            <div>
+                Here you can see all actions with banners
+            </div>
+        </div>
+        <div class="col-sm">
+            <div>
+                <h3 style="font-size:500%"><a href="/banners">Banners</a></h3>
+            </div>
+            <div>
+                Here you can see all banners and create new, and check some information about banners
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

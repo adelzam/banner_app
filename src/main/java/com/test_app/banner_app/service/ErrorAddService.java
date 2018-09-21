@@ -9,11 +9,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class ErrorAddService {
-    public void writeErrors(BindingResult bindingResult,
-                            Map<String, Object> model) {
+    public Map<String, String> writeErrors(BindingResult bindingResult) {
         Map<String, String> errorMap = bindingResult.getFieldErrors().stream().collect(Collectors.toMap(
                 fieldError -> fieldError.getField() + " Error:", FieldError::getDefaultMessage)
         );
-        model.put("errors", errorMap);
+        return errorMap;
     }
 }

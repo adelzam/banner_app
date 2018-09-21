@@ -1,4 +1,4 @@
-package com.test_app.banner_app.controller;
+package com.test_app.banner_app.controllers;
 
 import com.test_app.banner_app.entity.Audit;
 import com.test_app.banner_app.entity.User;
@@ -25,26 +25,29 @@ public class AuditController {
     }
 
     @GetMapping
-    public String getAll(Map<String, Object> model) {
+    public String getAll(@AuthenticationPrincipal User user, Map<String, Object> model) {
         Iterable<Audit> audits = auditService.getAll();
         model.put("audits", audits);
         model.put("auditCheck", ((List<Audit>) audits).isEmpty());
+        model.put("user", user.getUsername());
         return "audits";
     }
 
     @GetMapping("user/{id}")
-    public String getAuditByUser(@PathVariable("id") Integer id, Map<String, Object> model) {
+    public String getAuditByUser(@PathVariable("id") Integer id, @AuthenticationPrincipal User user, Map<String, Object> model) {
         Iterable<Audit> audits = auditService.getAuditByUserId(id);
         model.put("audits", audits);
         model.put("auditCheck", ((List<Audit>) audits).isEmpty());
+        model.put("user", user.getUsername());
         return "audits";
     }
 
     @GetMapping("banner/{id}")
-    public String getAuditByBanner(@PathVariable("id") Integer id, Map<String, Object> model) {
+    public String getAuditByBanner(@PathVariable("id") Integer id,@AuthenticationPrincipal User user, Map<String, Object> model) {
         Iterable<Audit> audits = auditService.getAuditByBannerId(id);
         model.put("audits", audits);
         model.put("auditCheck", ((List<Audit>) audits).isEmpty());
+        model.put("user", user.getUsername());
         return "audits";
     }
 
@@ -53,6 +56,7 @@ public class AuditController {
         Iterable<Audit> audits = auditService.getAuditByUserName(user.getUsername());
         model.put("audits", audits);
         model.put("auditCheck", ((List<Audit>) audits).isEmpty());
+        model.put("user", user.getUsername());
         return "audits";
     }
 

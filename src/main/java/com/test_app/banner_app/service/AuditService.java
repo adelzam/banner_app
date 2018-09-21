@@ -1,11 +1,10 @@
 package com.test_app.banner_app.service;
 
 import com.test_app.banner_app.entity.Audit;
-import com.test_app.banner_app.repositories.AuditRepository;
+import com.test_app.banner_app.repositories.interfaces.AuditRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class AuditService {
@@ -20,7 +19,9 @@ public class AuditService {
     void saveAuditLine(Audit audit) {
         auditRepository.save(audit);
     }
-
+    void changeBannerIdToNullIfDeleted(Integer id) {
+        auditRepository.changeBannerIdToNullIfDeleted(id);
+    }
     void updateAuditDeleted(Integer id) {
         List<Audit> auditList = auditRepository.findAuditsByBannerId(id);
         for (Audit audit : auditList) {

@@ -12,7 +12,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Banner admin panel</a>
+    <a class="navbar-brand" href="/my_page">Banner admin panel</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -29,6 +29,7 @@
                 <a class="nav-link" href="/audit">Show audit</a>
             </li>
         </ul>
+        <div>{{user}}</div>
         <form action="/logout" method="post">
             <input type="hidden" name="_csrf" value="{{_csrf.token}}">
             <input type="submit" value="Sign Out" class="btn btn-outline-success"/>
@@ -36,18 +37,18 @@
     </div>
 </nav>
 <form method="post" action="/banners/update">
-    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
     <select name="langId">
         <option selected value="{{banner.lang.id}}">{{banner.lang.country}} {{banner.lang.language}}</option>
         {{#locals}}
         <option value="{{id}}">{{country}} {{language}}</option>
         {{/locals}}
     </select>
-    <input type="hidden" name="id" value="{{banner.id}}">
-    <input type="text" name="targetUrl"  placeholder="targetUrl" value="{{banner.targetUrl}}">
-    <input type="text" name="height"  placeholder="height" value=" {{banner.height}}">
-    <input type="text" name="width"  placeholder="width" value="{{banner.width}}">
-    <input type="text" name="imgSrc"  placeholder="imgSrc" value="{{banner.imgSrc}}">
+    <input type="hidden" name="id" value="{{banner.id}}"/>
+    <input type="text" name="targetUrl"  placeholder="targetUrl" value="{{banner.targetUrl}}"/>
+    <input type="text" name="height"  placeholder="height" value=" {{banner.height}}"/>
+    <input type="text" name="width"  placeholder="width" value="{{banner.width}}"/>
+    <input type="text" name="imgSrc"  placeholder="imgSrc" value="{{banner.imgSrc}}"/>
     <button type="submit">Edit</button>
 </form>
 </body>

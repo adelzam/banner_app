@@ -2,7 +2,7 @@ package com.test_app.banner_app.service;
 
 import com.test_app.banner_app.entity.User;
 import com.test_app.banner_app.entity.enums.Role;
-import com.test_app.banner_app.repositories.UserRepository;
+import com.test_app.banner_app.repositories.interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    User getUserByUserName(String username) {
+    public User getUserByUserName(String username) {
         return userRepository.findByUsername(username);
     }
 }
