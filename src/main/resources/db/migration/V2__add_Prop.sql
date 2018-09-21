@@ -1,13 +1,13 @@
-
 insert into local_info(id, country, "language") values (1, 'Russia', 'Russian');
-insert into local_info(id, country, "language") values   (2, 'Switzerland', 'German');
-insert into local_info(id, country, "language") values   (3, 'Switzerland', 'French');
-insert into local_info(id, country, "language") values   (4, 'USA', 'English');
+insert into local_info(id, country, "language") values (2, 'Switzerland', 'German');
+insert into local_info(id, country, "language") values (3, 'Switzerland', 'French');
+insert into local_info(id, country, "language") values (4, 'USA', 'English');
 
 insert into usr(id, active, first_name, last_name, password, username) values (1, true, 'Oleg', 'Veshiy', '123', 'oleg23');
 insert into usr(id, active, first_name, last_name, password, username) values (2, true, 'Ekaterina', 'Velykaya', '123', 'ekat1');
 insert into user_role (user_id, roles) values (1, 'USER');
 insert into user_role (user_id, roles) values (2, 'USER');
+
 create extension if not exists pgcrypto;
 update usr set password = crypt(password, gen_salt('bf', 8));
 

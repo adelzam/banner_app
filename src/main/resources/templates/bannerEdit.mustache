@@ -36,20 +36,67 @@
         </form>
     </div>
 </nav>
-<form method="post" action="/banners/update">
+<form action="/banners/update" class="needs-validation" style="margin-left: 2%; margin-right: 2%" method="post">
     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-    <select name="langId">
-        <option selected value="{{banner.lang.id}}">{{banner.lang.country}} {{banner.lang.language}}</option>
-        {{#locals}}
-        <option value="{{id}}">{{country}} {{language}}</option>
-        {{/locals}}
-    </select>
-    <input type="hidden" name="id" value="{{banner.id}}"/>
-    <input type="text" name="targetUrl"  placeholder="targetUrl" value="{{banner.targetUrl}}"/>
-    <input type="text" name="height"  placeholder="height" value=" {{banner.height}}"/>
-    <input type="text" name="width"  placeholder="width" value="{{banner.width}}"/>
-    <input type="text" name="imgSrc"  placeholder="imgSrc" value="{{banner.imgSrc}}"/>
-    <button type="submit">Edit</button>
+    <input type="hidden" name="id" value="{{banner.id}}">
+    <div class="form-row">
+        <div class="col mb-3">
+            <label for="validationCustom01">Local</label>
+            <select name="langId" class="form-control">
+                <option selected value="{{banner.lang.id}}">{{banner.lang.country}} {{banner.lang.language}}</option>
+                {{#locals}}
+                    <option value="{{id}}">{{country}} {{language}}</option>
+                {{/locals}}
+            </select>
+        </div>
+        <div class="col mb-3">
+            <label for="validationCustom02">Banner height</label>
+            <input type="text" value="{{^enteredBanner}}{{banner.height}}{{/enteredBanner}}{{#enteredBanner}}{{#height}}{{value}}{{/height}}{{/enteredBanner}}" class="form-control {{#heightError}}
+            is-invalid{{/heightError}}" name="height" placeholder="height"/>
+            {{#heightError}}
+                <div class="invalid-feedback">
+                    {{heightError}}
+                </div>
+            {{/heightError}}
+        </div>
+        <div class="col mb-3">
+            <label for="validationCustomUsername">Banner width</label>
+            <div class="input-group">
+                <input type="text"
+                       value="{{#enteredBanner}}{{#width}}{{value}}{{/width}}{{/enteredBanner}}{{^enteredBanner}}{{banner.width}}{{/enteredBanner}}"
+                       class="form-control {{#widthError}}is-invalid{{/widthError}}" name="width" placeholder="width"/>
+                {{#widthError}}
+                    <div class="invalid-feedback">
+                        {{widthError}}
+                    </div>
+                {{/widthError}}
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col mb-3">
+            <label for="validationCustom03">Target URL</label>
+            <input type="text" value="{{#enteredBanner}}{{#targetUrl}}{{targetUrl}}{{/targetUrl}}{{/enteredBanner}}{{^enteredBanner}}{{banner.targetUrl}}{{/enteredBanner}}"
+                   name="targetUrl" class="form-control {{#targetUrlError}}is-invalid{{/targetUrlError}}"
+                   placeholder="targetUrl"/>
+            {{#targetUrlError}}
+                <div class="invalid-feedback">
+                    {{targetUrlError}}
+                </div>
+            {{/targetUrlError}}
+        </div>
+        <div class="col mb-3">
+            <label for="validationCustom04">Image Source</label>
+            <input type="text" value="{{#enteredBanner}}{{#imgSrc}}{{imgSrc}}{{/imgSrc}}{{/enteredBanner}}{{^enteredBanner}}{{banner.imgSrc}}{{/enteredBanner}}"
+                   name="imgSrc" class="form-control {{#imgSrcError}}is-invalid{{/imgSrcError}}" placeholder="imgSrc"/>
+            {{#imgSrcError}}
+                <div class="invalid-feedback">
+                    {{imgSrcError}}
+                </div>
+            {{/imgSrcError}}
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">EDIT</button>
 </form>
 </body>
 </html>

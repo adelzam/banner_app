@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"/>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/script.js"></script>
-    <link href='/static/css/help_style.css' rel='stylesheet' type='text/css'/>
+    <script type="text/javascript" src="/js/script.js"></script>
+    <link href='/css/help_style.css' rel='stylesheet' type='text/css'/>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,41 +36,60 @@
     </div>
 </nav>
 <div class="span8">
-    Add new banner:
-    <form method="post" class="form-horizontal">
-        <fieldset>
-            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-            <div class="controls">
-                <label class="control-label" for="lang_select">Chose local info</label>
-                <label>
-                    <select name="langId" class="form-control" id="lang_select">
-                        {{#locals}}
-                            <option value="{{id}}">{{country}} {{language}}</option>
-                        {{/locals}}
-                    </select>
-                </label>
+    <form class="needs-validation" style="margin-left: 2%; margin-right: 2%" method="post">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+        <div class="form-row">
+            <div class="col mb-3">
+                <label for="validationCustom01">Local</label>
+                <select name="langId" class="form-control">
+                    {{#enteredBanner}}{{#lang}}<option selected value="{{id}}">{{country}} {{language}}</option>{{/lang}}{{/enteredBanner}}
+                    {{#locals}}
+                        <option value="{{id}}">{{country}} {{language}}</option>
+                    {{/locals}}
+                </select>
             </div>
-            <div class="controls">
-                <label class="control-label" for="tagretUrl_input">Set banner target url</label>
-                <input type="text" name="targetUrl" placeholder="targetUrl" id="tagretUrl_input"
-                       class="input-xlarge"/>
+            <div class="col mb-3">
+                <label for="validationCustom02">Banner height</label>
+                <input type="text" value="{{#enteredBanner}}{{#height}}{{value}}{{/height}}{{/enteredBanner}}" class="form-control {{#heightError}}is-invalid{{/heightError}}" name="height"  placeholder="height"/>
+                {{#heightError}}
+                    <div class="invalid-feedback">
+                       {{heightError}}
+                    </div>
+                {{/heightError}}
             </div>
-            <div class="controls">
-                <label class="control-label" for="heightUrl_input">Set banner height</label>
-                <input type="text" name="height" placeholder="height" class="input-xlarge"/>
+            <div class="col mb-3">
+                <label for="validationCustomUsername">Banner width</label>
+                <div class="input-group">
+                    <input type="text" value="{{#enteredBanner}}{{#width}}{{value}}{{/width}}{{/enteredBanner}}" class="form-control {{#widthError}}is-invalid{{/widthError}}" name="width"  placeholder="width"/>
+                    {{#widthError}}
+                        <div class="invalid-feedback">
+                            {{widthError}}
+                        </div>
+                    {{/widthError}}
+                </div>
             </div>
-            <div class="controls">
-                <label class="control-label" for="widthUrl_input">Set banner width</label>
-                <input type="text" name="width" placeholder="width" class="input-xlarge"/>
+        </div>
+        <div class="form-row">
+            <div class="col mb-3">
+                <label for="validationCustom03">Target URL</label>
+                <input type="text" value="{{#enteredBanner}}{{#targetUrl}}{{targetUrl}}{{/targetUrl}}{{/enteredBanner}}" name="targetUrl" class="form-control {{#targetUrlError}}is-invalid{{/targetUrlError}}" placeholder="targetUrl"/>
+                {{#targetUrlError}}
+                    <div class="invalid-feedback">
+                        {{targetUrlError}}
+                    </div>
+                {{/targetUrlError}}
             </div>
-            <div class="controls">
-                <label class="control-label" for="imgSrcUrl_input">Set banner image source</label>
-                <input type="text" name="imgSrc" placeholder="imgSrc" class="input-xlarge"/></div>
-            {{#errors}}{{.}}{{/errors}}
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Add new banner</button>
+            <div class="col mb-3">
+                <label for="validationCustom04">Image Source</label>
+                <input type="text" value="{{#enteredBanner}}{{#imgSrc}}{{imgSrc}}{{/imgSrc}}{{/enteredBanner}}" name="imgSrc" class="form-control {{#imgSrcError}}is-invalid{{/imgSrcError}}"  placeholder="imgSrc"/>
+                {{#imgSrcError}}
+                    <div class="invalid-feedback">
+                        {{imgSrcError}}
+                    </div>
+                {{/imgSrcError}}
             </div>
-        </fieldset>
+        </div>
+        <button class="btn btn-primary" type="submit">Add new bunner</button>
     </form>
 </div>
 <div style="width: 96%; padding: 0; border: 0; margin: 2%;">

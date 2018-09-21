@@ -4,10 +4,11 @@ import com.test_app.banner_app.entity.Banner;
 import com.test_app.banner_app.entity.User;
 import com.test_app.banner_app.entity.enums.BannerSortEnum;
 import com.test_app.banner_app.service.BannerService;
-import com.test_app.banner_app.service.ErrorAddService;
+import com.test_app.banner_app.service.LocalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,9 @@ public class BannerController {
 
     @Autowired
     private BannerService bannerService;
+
     @Autowired
-    private ErrorAddService errorAddService;
+    private LocalService localService;
 
 
     @GetMapping
@@ -37,15 +39,16 @@ public class BannerController {
                       @RequestParam Integer langId,
                       @Valid Banner banner,
                       BindingResult bindingResult,
-                      Map<String, Object> model) {
+                      Model model) {
         if (bindingResult.hasErrors()) {
-            model.put("errors", errorAddService.writeErrors(bindingResult));
+            model.mergeAttributes(ControllerUtils.getErrors(bindingResult));
+            model.addAttribute("enteredBanner", banner);
         } else {
             banner.setId(null);
             bannerService.createOrUpdateBanner(user, banner, langId);
         }
-        model.putAll(bannerService.getPreload());
-        model.put("user", user.getUsername());
+        model.addAllAttributes(bannerService.getPreload());
+        model.addAttribute("user", user.getUsername());
         return "banners";
     }
 
@@ -57,7 +60,7 @@ public class BannerController {
     }
 
     @PostMapping("group-local")
-    public String groupBannersByLocal( @AuthenticationPrincipal User user, @RequestParam Integer langId, Map<String, Object> model) {
+    public String groupBannersByLocal(@AuthenticationPrincipal User user, @RequestParam Integer langId, Map<String, Object> model) {
         model.putAll(bannerService.getPreloadWithGroup(langId));
         model.put("isGroup", true);
         model.put("user", user.getUsername());
@@ -84,14 +87,19 @@ public class BannerController {
                                @RequestParam Integer langId,
                                @Valid Banner banner,
                                BindingResult bindingResult,
-                               Map<String, Object> model) {
+                               Model model) {
+        String page;
         if (bindingResult.hasErrors()) {
-            model.put("errors", errorAddService.writeErrors(bindingResult));
+                banner.setLang(localService.getLocalById(langId));
+                model.mergeAttributes(ControllerUtils.getErrors(bindingResult));
+                model.addAttribute("enteredBanner", banner);
+                page = "bannerEdit";
         } else {
             bannerService.createOrUpdateBanner(user, banner, langId);
+            page = "redirect:/banners";
         }
-        model.putAll(bannerService.getPreload());
-        model.put("user", user.getUsername());
-        return "redirect:/banners";
+        model.mergeAttributes(bannerService.getPreload());
+        model.addAttribute("user", user.getUsername());
+        return page;
     }
 }

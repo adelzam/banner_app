@@ -20,13 +20,13 @@ public class Banner {
     @Column(name = "target_url")
     private String targetUrl;
 
-    @NotNull
-    @Min(1)
+    @NotNull(message = "Entered value is empty! Please enter height.")
+    @Min(value = 1, message = "Min value it 1. Check entered value")
     @Column(name = "height")
     private Integer height;
 
-    @NotNull
-    @Min(1)
+    @NotNull(message = "Entered value is empty! Please enter width.")
+    @Min(value = 1, message = "Min value it 1. Check entered value")
     @Column(name = "width")
     private Integer width;
 
