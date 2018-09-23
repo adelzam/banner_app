@@ -12,6 +12,7 @@
 
 По умолчанию настройки пользователя для обеих БД в приложении стоят следующие 
 `spring.datasource.username=postgres`
+
 `spring.datasource.password=123456`
 
 **ВНИМАНИЕ!**  Если в PostgreSQL используется другой пользователь для базы данных или пароль их необходимо   изменить в файлах **application.properties** и **application-test.properties**
